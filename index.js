@@ -28,7 +28,6 @@ app.use(express.json());
 // === MongoDB Schema ===
 const userSchema = new mongoose.Schema({
   ism: String,
-  familiya: String,
   telefon: String,
 });
 const User = mongoose.model("User", userSchema);
@@ -45,7 +44,6 @@ function normalizePhone(phone) {
 
 const schema = Joi.object({
   ism: Joi.string().min(2).max(100).required(),
-  familiya: Joi.string().min(2).max(100).required(),
   telefon: Joi.string().required().min(7).max(13),
 });
 
@@ -56,7 +54,7 @@ async function appendToSheet(user) {
   });
 
   const sheets = google.sheets({ version: "v4", auth });
-  const values = [[user.ism, user.familiya, user.telefon, new Date().toISOString()]];
+  const values = [[user.ism, user.telefon, new Date().toISOString()]];
 
   sheets.spreadsheets.values.append({
     spreadsheetId: SHEET_ID,
@@ -71,7 +69,6 @@ async function appendToSheet(user) {
 //     fields: {
 //       TITLE: `${user.ism} ${user.familiya}`,
 //       NAME: user.ism,
-//       LAST_NAME: user.familiya,
 //       PHONE: [{ VALUE: user.telefon, VALUE_TYPE: "WORK" }],
 //     },
 //   });
@@ -83,7 +80,7 @@ app.post("/users", async (req, res) => {
     const { error, value } = schema.validate(req.body);
     if (error) return res.status(400).json({ message: error.details[0].message });
 
-    const { ism, familiya, telefon } = value;
+    const { ism, telefon } = value;
     const normalizedPhone = normalizePhone(telefon);
 
     if (!normalizedPhone) {
@@ -95,7 +92,7 @@ app.post("/users", async (req, res) => {
       return res.status(400).json({ message: "Bu telefon raqam allaqachon ro‘yxatdan o‘tgan." });
     }
 
-    const user = new User({ ism, familiya, telefon: normalizedPhone });
+    const user = new User({ ism, telefon: normalizedPhone });
     await user.save();
 
     // sendToBitrix(user).catch(console.error);
@@ -118,7 +115,6 @@ app.get("/users", async (req, res) => {
   }
 });
 
-// === Serverni ishga tushurish ===
 app.listen(PORT, () => {
   console.log(`Server http://localhost:${PORT} da ishlayapti`);
 });
