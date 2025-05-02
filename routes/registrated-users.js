@@ -7,8 +7,6 @@ const router = express.Router();
 const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
 const SHEET_NAME = "Registration users";
 const CREDENTIALS_PATH = path.join(__dirname, "../", process.env.GOOGLE_CREDENTIALS_PATH);
-
-// JOI validatsiyasi
 const schema = Joi.object({
   ism: Joi.string().min(2).max(100).required(),
   telefon: Joi.string().pattern(/^\+998\d{9}$/).required(),
@@ -115,7 +113,6 @@ async function appendToSheet(user) {
       reason = err.message;
     }
 
-    console.error("❌ Sheets xatosi:", reason);
     return { success: false, reason };
   }
 }
@@ -142,12 +139,10 @@ async function getDataFromSheet() {
 
     return users;
   } catch (err) {
-    console.error("❌ Sheets'dan ma'lumot olishda xatolik:", err.message);
     return [];
   }
 }
 
-// Routes
 router.post("/", async (req, res) => {
   const { error, value } = validateRequest(req.body);
   if (error) return res.status(400).json({ error });

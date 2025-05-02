@@ -8,7 +8,6 @@ const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
 const SHEET_NAME = "Sheet1";
 const CREDENTIALS_PATH = path.join(__dirname, "../", process.env.GOOGLE_CREDENTIALS_PATH);
 
-// JOI validatsiyasi
 const schema = Joi.object({
   ism: Joi.string().min(2).max(100).required(),
   telefon: Joi.string().pattern(/^998\d{9}$/).required(),
@@ -51,7 +50,6 @@ const auth = new google.auth.GoogleAuth({
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
-// Telefon raqami mavjudligini tekshiruvchi funksiya
 async function checkPhoneInSheet(telefon) {
   try {
     const client = await auth.getClient();
@@ -131,7 +129,6 @@ async function getDataFromSheet() {
   }
 }
 
-// Routes
 router.post("/", async (req, res) => {
   const { error, value } = validateRequest(req.body);
   if (error) return res.status(400).json({ error });

@@ -3,13 +3,12 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
 
-const usersRouter = require("./routes/sample-users"); // Users routelarini import qilish
+const usersRouter = require("./routes/sample-users"); 
 const registratedusersRouter = require('./routes/registrated-users')
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
 app.use(cors({
   origin: "http://localhost:3000",
   methods: ["GET", "POST"],
@@ -18,9 +17,8 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-// Routes
-app.use("/sampleusers", usersRouter); // "/users" uchun routes
-app.use("/registratedusers", registratedusersRouter); // "/users" uchun routes
+app.use("/sampleusers", usersRouter);
+app.use("/registratedusers", registratedusersRouter);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server ishga tushdi: http://localhost:${PORT}`);
