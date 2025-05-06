@@ -10,7 +10,7 @@ const CREDENTIALS_PATH = path.join(__dirname, "../", process.env.GOOGLE_CREDENTI
 
 const schema = Joi.object({
   ism: Joi.string().min(2).max(100).required(),
-  telefon: Joi.string().pattern(/^998\d{9}$/).required(),
+  telefon: Joi.string().pattern(/^\+998\d{9}$/).required()
 });
 
 function validateRequest(body) {
