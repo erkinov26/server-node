@@ -11,7 +11,7 @@ const schema = Joi.object({
   ism: Joi.string().min(2).max(100).required(),
   telefon: Joi.string().pattern(/^\+998\d{9}$/).required(),
   viloyat: Joi.string().min(3).max(100).required(),
-  talim_shakli: Joi.string().valid("Kunduzgi", "Sirtqi oddiy", "Sirtqi stajli").required(),
+  talim_shakli: Joi.string().valid("Bakalavr kunduzgi", "Magistratura").required(),
   talim_yonalishi: Joi.string().min(3).max(100).required(),
 });
 
